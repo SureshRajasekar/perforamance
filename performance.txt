@@ -1,0 +1,31 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Create a Spark session
+spark = SparkSession.builder.appName("PerformanceUtilizationExample").getOrCreate()
+
+# Set configuration options for better performance
+spark.conf.set("spark.sql.shuffle.partitions", "500")  # Adjust the number of shuffle partitions based on your cluster size
+
+# Load your data (replace 'your_data_path' with the actual path)
+data_path = "your_data_path"
+df = spark.read.csv(data_path, header=True, inferSchema=True)
+
+# Perform transformations and optimizations
+df = df.filter(col("column_name") > 0)  # Example: Filter out unnecessary data early
+df = df.repartition("column_name")      # Repartition for better parallelism
+
+# Perform your business logic transformations
+# ...
+
+# Use cache() for intermediate results if they are reused multiple times
+df.cache()
+
+# Perform actions to trigger the execution
+result = df.groupBy("group_column").agg({"agg_column": "sum"}).collect()
+
+# Unpersist cached data to free up resources
+df.unpersist()
+
+# Stop the Spark session
+spark.stop()
