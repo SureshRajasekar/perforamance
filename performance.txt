@@ -15,6 +15,7 @@ df = spark.read.csv(data_path, header=True, inferSchema=True)
 df = df.filter(col("column_name") > 0)  # Example: Filter out unnecessary data early
 df = df.repartition("column_name")      # Repartition for better parallelism
 
+
 # Perform your business logic transformations
 # ...
 
