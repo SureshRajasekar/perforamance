@@ -24,7 +24,7 @@ df.cache()
 # Perform actions to trigger the execution
 result = df.groupBy("group_column").agg({"agg_column": "sum"}).collect()
 
-# Unpersist cached data to free up resources
+# Unpersist cached data to free up resource
 df.unpersist()
 
 # Stop the Spark session
